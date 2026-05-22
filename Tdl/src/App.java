@@ -4,7 +4,6 @@ public class App {
     public static void main(String[] args) throws Exception {
         Scanner ent = new Scanner(System.in);
         Lista list = new Lista();
-
         int op;
           
         do{
