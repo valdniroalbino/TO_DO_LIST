@@ -5,14 +5,16 @@ public class App {
         Scanner ent = new Scanner(System.in);
         Lista list = new Lista();
 
-        System.out.println("====== MENU TO-DO-LIST ======");
-        System.out.println("1. Adicionar Tarefa");
-        System.out.println("2. Ver Tarefas");
-        System.out.println("0. Sair");
-        System.out.print("Selecione a opção: ");
-        int op = ent.nextInt();
-        ent.nextLine();  
+        int op;
+          
         do{
+            System.out.println("====== MENU TO-DO-LIST ======");
+            System.out.println("1. Adicionar Tarefa");
+            System.out.println("2. Ver Tarefas");
+            System.out.println("0. Sair");
+            System.out.print("Selecione a opção: ");
+            op = ent.nextInt();
+            ent.nextLine();
             switch (op) {
                  case 1:
                     System.out.println("ID da tarefa: ");
