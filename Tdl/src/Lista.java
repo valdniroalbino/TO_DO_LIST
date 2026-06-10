@@ -20,7 +20,7 @@ public class Lista {
     public void listarTarefas(){
         System.out.println("LISTA DE TAREFAS: ");
        for(int i = 0; i < tarefas.size(); i++){
-        System.out.printf("%dº %s;\n",i+1,tarefas.get(i).getTitulo());
+        System.out.printf("%dº %s; | status: %s\n",i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getStatus());
        }
     }
 
