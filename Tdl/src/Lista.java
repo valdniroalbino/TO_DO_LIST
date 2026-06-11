@@ -28,4 +28,13 @@ public class Lista {
         return tarefas;
     }
 
+    public void marcarConcluida(int id){
+        if(id>=0 && id < tarefas.size()){
+            tarefas.get(id).setStatus("CONCLUÍDA");
+            System.out.println("Tarefa concluída!");
+        }else{
+            System.out.println("ID inexistente!");
+        }
+    }
+
 }
