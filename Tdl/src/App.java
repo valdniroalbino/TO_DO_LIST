@@ -26,11 +26,11 @@ public class App {
                     System.out.print("Prioridade (baixa/média/alta): ");
                     String prioridade = ent.nextLine();
                     Tarefas task = new Tarefas(id, descricao, data, prioridade);
-                    list.inserir(task);
+                    list.adicionarTarefa(task);
                  break;
                  case 2:
                     System.out.println("A ver tarefas...");
-                    list.ver();
+                    list.listarTarefas();
                     break;
                 case 0:
                     System.out.println("Saindo...");
