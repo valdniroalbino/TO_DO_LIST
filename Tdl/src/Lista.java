@@ -13,7 +13,9 @@ public class Lista {
             System.out.println("tarefa invalida!");
             return;
         }
-        tarefas.add(t);
+        int newid = tarefas.size() + 1;
+        Tarefas te = new Tarefas(newid, t.getTitulo(), t.getData(), t.getPrioridade());
+        tarefas.add(te);
         System.out.println("tarefa adicionada com sucesso!");
     }
 
@@ -27,11 +29,17 @@ public class Lista {
     public void atualizar(int id, String campo, String novoValor) {
         
     }
+    
+    public void atualizarIds(){
+        for(int i=0; i < tarefas.size(); i++){
+            tarefas.get(i).setId(i + 1);
+        }
+    }
 
     public void removerTarefa(int indice) {
         if(indice >= 0 && tarefas.size() > indice){
             tarefas.remove(indice);
-
+            atualizarIds();
             System.out.println("tarefa removida com sucesso!");
         }else{
             System.out.println("indice invalido!");

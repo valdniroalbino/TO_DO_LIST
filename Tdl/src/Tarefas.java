@@ -1,12 +1,12 @@
 public class Tarefas {
-    private int id=1;
+    private int id;
     private String titulo;
     private String data;
     private String prioridade;
     private String status;
 
-    public Tarefas(/*int id,*/ String titulo, String data, String prioridade){
-        this.id = id++;
+    public Tarefas(int id, String titulo, String data, String prioridade){
+        this.id = id;
         this.titulo = titulo;
         this.data = data;
         this.prioridade = prioridade;
