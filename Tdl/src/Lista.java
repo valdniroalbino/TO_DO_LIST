@@ -50,5 +50,22 @@ public class Lista {
             System.out.println("ID inexistente!");
         }
     }
+    public void filtrarConcluidas(){
+        System.out.println("=== Tarefas Concluídas ===");
+        for(int i=0; i< tarefas.size(); i++){
+            if(tarefas.get(i).getStatus().compareToIgnoreCase("CONCLUÍDA")==1){
+                System.out.println(i+" - "+tarefas.get(i).getTitulo());
+            }
+        }
+    }
+
+    public void filtrarPendentes(){
+        System.out.println("=== Tarefas Concluídas ===");
+        for(int i=0; i< tarefas.size(); i++){
+            if(tarefas.get(i).getStatus().compareToIgnoreCase("PENDENTE")==1){
+                System.out.println(i+" - "+tarefas.get(i).getTitulo());
+            }
+        }
+    }
 
 }
