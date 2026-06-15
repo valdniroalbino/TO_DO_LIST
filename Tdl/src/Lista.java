@@ -50,6 +50,7 @@ public class Lista {
             System.out.println("ID inexistente!");
         }
     }
+    
     public void filtrarConcluidas(){
         System.out.println("=== Tarefas Concluídas ===");
         for(int i=0; i< tarefas.size(); i++){

@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -16,16 +17,16 @@ public class App {
             ent.nextLine();
             switch (op) {
                  case 1:
-                    System.out.println("ID da tarefa: ");
+                    /*System.out.println("ID da tarefa: ");
                     int id = ent.nextInt();
-                    ent.nextLine();  
+                    ent.nextLine();*/  
                     System.out.print("Descrição da tarefa: ");
                     String descricao = ent.nextLine();
-                    System.out.print("Data de vencimento (dd/mm/yyyy): ");
+                    System.out.print("Data de vencimento (dd/mm/aaaa): ");
                     String data = ent.nextLine();
                     System.out.print("Prioridade (baixa/média/alta): ");
                     String prioridade = ent.nextLine();
-                    Tarefas task = new Tarefas(id, descricao, data, prioridade);
+                    Tarefas task = new Tarefas(descricao, data, prioridade);
                     list.adicionarTarefa(task);
                  break;
                  case 2:
