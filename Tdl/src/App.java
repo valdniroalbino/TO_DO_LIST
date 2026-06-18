@@ -20,15 +20,15 @@ public class App {
                     /*System.out.println("ID da tarefa: ");
                     int id = ent.nextInt();
                     ent.nextLine();*/  
-                    int id=0;
+                    //int id=0;
                     System.out.print("Descrição da tarefa: ");
                     String descricao = ent.nextLine();
                     System.out.print("Data de vencimento (dd/mm/aaaa): ");
                     String data = ent.nextLine();
                     System.out.print("Prioridade (baixa/média/alta): ");
                     String prioridade = ent.nextLine();
-                    Tarefas task = new Tarefas(id, descricao, data, prioridade);
-                    list.adicionarTarefa(task);
+                    //Tarefas task = new Tarefas(id, descricao, data, prioridade);
+                    list.adicionarTarefa(descricao,data,prioridade);
                  break;
                  case 2:
                     System.out.println("A ver tarefas...");

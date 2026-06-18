@@ -8,21 +8,21 @@ public class Lista {
         this.tarefas = new ArrayList<>();
     }
 
-    public void adicionarTarefa(Tarefas t){
-        if(t == null){
+    public void adicionarTarefa(String titulo, String data, String prioridade){
+        if(titulo == null || titulo.isEmpty()){
             System.out.println("tarefa invalida!");
             return;
         }
-        int newid = tarefas.size() + 1;
-        Tarefas te = new Tarefas(newid, t.getTitulo(), t.getData(), t.getPrioridade());
-        tarefas.add(te);
+        int novoId = tarefas.size() + 1;
+        Tarefas trf = new Tarefas(novoId,titulo,data,prioridade);
+        tarefas.add(trf);
         System.out.println("tarefa adicionada com sucesso!");
     }
 
     public void listarTarefas(){
         System.out.println("LISTA DE TAREFAS: ");
        for(int i = 0; i < tarefas.size(); i++){
-        System.out.printf("%dº %s; | status: %s\n",i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getStatus());
+        System.out.printf("%dº %s; | estado: %s\n",i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getStatus());
        }
     }
 
@@ -36,13 +36,13 @@ public class Lista {
         }
     }
 
-    public void removerTarefa(int indice) {
-        if(indice >= 0 && tarefas.size() > indice){
-            tarefas.remove(indice);
+    public void removerTarefa(int id) { //wis, o nome id vem pq é o que o usuario irá ver aao selecionar a tarefa que deseja remover. 
+        if(id >= 0 && tarefas.size() > id){
+            tarefas.remove(id-1); // -1 pq isso é arraylist começa do 0
             atualizarIds();
             System.out.println("tarefa removida com sucesso!");
         }else{
-            System.out.println("indice invalido!");
+            System.out.println("id invalido!");
         } 
     }
 
@@ -51,8 +51,8 @@ public class Lista {
     }
 
     public void marcarConcluida(int id){
-        if(id>=0 && id < tarefas.size()){
-            tarefas.get(id).setStatus("CONCLUÍDA");
+        if(id>=1 && id <= tarefas.size()){
+            tarefas.get(id-1).setStatus("CONCLUÍDA");
             System.out.println("Tarefa concluída!");
         }else{
             System.out.println("ID inexistente!");
@@ -62,17 +62,17 @@ public class Lista {
     public void filtrarConcluidas(){
         System.out.println("=== Tarefas Concluídas ===");
         for(int i=0; i< tarefas.size(); i++){
-            if(tarefas.get(i).getStatus().compareToIgnoreCase("CONCLUÍDA")==1){
-                System.out.println(i+" - "+tarefas.get(i).getTitulo());
+            if(tarefas.get(i).getStatus().equalsIgnoreCase("CONCLUÍDA")){
+                System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
             }
         }
     }
 
     public void filtrarPendentes(){
-        System.out.println("=== Tarefas Concluídas ===");
+        System.out.println("=== Tarefas Pendentes ===");
         for(int i=0; i< tarefas.size(); i++){
-            if(tarefas.get(i).getStatus().compareToIgnoreCase("PENDENTE")==1){
-                System.out.println(i+" - "+tarefas.get(i).getTitulo());
+            if(tarefas.get(i).getStatus().equalsIgnoreCase("PENDENTE")){
+                System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
             }
         }
     }
