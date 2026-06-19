@@ -6,6 +6,7 @@ public class App {
         Scanner ent = new Scanner(System.in);
         Lista list = new Lista();
         int op;
+
           
         do{
             System.out.println("====== MENU TO-DO-LIST ======");
@@ -17,6 +18,7 @@ public class App {
             ent.nextLine();
             switch (op) {
                  case 1:
+                    
                     /*System.out.println("ID da tarefa: ");
                     int id = ent.nextInt();
                     ent.nextLine();*/  
@@ -29,6 +31,7 @@ public class App {
                     String prioridade = ent.nextLine();
                     //Tarefas task = new Tarefas(id, descricao, data, prioridade);
                     list.adicionarTarefa(descricao,data,prioridade);
+                   
                  break;
                  case 2:
                     System.out.println("A ver tarefas...");

@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Lista {
     
@@ -74,6 +78,46 @@ public class Lista {
             if(tarefas.get(i).getStatus().equalsIgnoreCase("PENDENTE")){
                 System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
             }
+        }
+    }
+
+    public void guardarTarefas(){
+        try{
+            PrintWriter writer = new PrintWriter("tarefas.txt");
+            for(int i = 0; i < tarefas.size(); i++){
+                Tarefas trf = tarefas.get(i);
+                writer.println(trf.getId() + ";" + trf.getTitulo() + ";" + trf.getData() + ";" + trf.getPrioridade() + ";" + trf.getStatus());
+
+            }
+            writer.close();
+            System.out.println("tarefas guardadas com sucesso!");
+        }catch (IOException e){
+            System.out.println("Erro ao guardar a lista de tarefas.");
+        }
+    }
+
+    public void carregarTarefas(){
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader("tarefas.txt"));
+            String linha = reader.readLine();
+            while(linha != null){
+                String[] partes = linha.split(";");
+                int id = Integer.parseInt(partes[0]); 
+                String titulo = partes[1];
+                String data = partes[2];
+                String prioridade = partes[3];
+                String estado = partes[4];// veio como String, converto para int pq as outras funcoes esperam por um int
+                Tarefas trf = new Tarefas(id,titulo,data,prioridade);
+                trf.setStatus(estado);
+                tarefas.add(trf);
+                linha = reader.readLine();
+
+            }  
+            reader.close();
+            System.out.println("bem-vindo de volta! Tarefas carregas.");
+
+        }catch(IOException e){
+            System.out.println("nenhuma tarefa guardada encontrada");
         }
     }
 
