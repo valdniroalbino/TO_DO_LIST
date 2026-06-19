@@ -31,7 +31,25 @@ public class Lista {
     }
 
     public void atualizar(int id, String campo, String novoValor) {
-        
+        if(id >= 1 && id <= tarefas.size()){
+            Tarefas trf = tarefas.get(id-1);
+
+            if(campo.equalsIgnoreCase("titulo")){
+                trf.setTitulo(novoValor);
+                System.out.println("titulo atualizado com sucesso!");
+            }else if(campo.equalsIgnoreCase("data")){
+                trf.setData(novoValor);
+                System.out.println("data atualizada com succesoi!");
+            }else if(campo.equalsIgnoreCase("prioridade")){
+                trf.setPrioridade(novoValor);
+                System.out.println("prioridade ataulizada com sucesso!");
+            }else{
+                System.out.println("campo invalide! use: titulo, data ou prioridade");
+            }
+             
+        }else{
+            System.out.println("id invalido!");
+        }
     }
     
     public void atualizarIds(){
