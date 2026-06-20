@@ -3,6 +3,7 @@ import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class Lista {
     
@@ -98,7 +99,7 @@ public class Lista {
             }
         }
     }
-
+  
     public void guardarTarefas(){
         try{
             PrintWriter writer = new PrintWriter("tarefas.txt");
@@ -120,11 +121,11 @@ public class Lista {
             String linha = reader.readLine();
             while(linha != null){
                 String[] partes = linha.split(";");
-                int id = Integer.parseInt(partes[0]); 
+                int id = Integer.parseInt(partes[0]); // veio como String, converto para int pq as outras funcoes esperam por um int
                 String titulo = partes[1];
                 String data = partes[2];
                 String prioridade = partes[3];
-                String estado = partes[4];// veio como String, converto para int pq as outras funcoes esperam por um int
+                String estado = partes[4];
                 Tarefas trf = new Tarefas(id,titulo,data,prioridade);
                 trf.setStatus(estado);
                 tarefas.add(trf);
@@ -138,5 +139,117 @@ public class Lista {
             System.out.println("nenhuma tarefa guardada encontrada");
         }
     }
+
+    public void contadorDeTarefas(){
+        int ctdConcluidas = 0;
+        int ctdPendentes = 0;
+
+        for(Tarefas t : tarefas){
+            if(t.getStatus().equalsIgnoreCase("pendente")){
+                ctdPendentes++;
+            }else{
+                ctdConcluidas++;
+            }
+        }
+
+        System.out.println("=== TAREFAS ===");
+        System.out.println("total: "+tarefas.size());
+        System.out.println("concluidas: "+ctdConcluidas);
+        System.out.println("pendentes: "+ctdPendentes);
+    }
+
+    public void percentagem(){
+        if(tarefas.isEmpty()){
+            System.out.println("0% de tarefas concluidas");
+            return;
+        }
+        int ctd = 0;
+        for(Tarefas t : tarefas){
+            if(t.getStatus().equalsIgnoreCase("concluida"))
+                ctd++;
+        }
+        int result = (ctd * 100) / tarefas.size();
+
+        System.out.println("foi concluido "+result+"% das tarefas");
+
+    }
+
+    public void filtrarPorPrioridade(String prioridade){
+        for(int i= 0; i < tarefas.size() ; i++){
+            if(tarefas.get(i).getPrioridade().equalsIgnoreCase(prioridade)){
+                System.out.println((i+1)+ "º "+tarefas.get(i).getTitulo()+";");
+            }
+        }
+    } 
+
+    public void limparConcluidas(){
+        for(int i = tarefas.size() -1; i >= 0 ; i--){
+            if(tarefas.get(i).getStatus().equalsIgnoreCase("concluida"))
+                tarefas.remove(i);
+        }
+        atualizarIds();
+        System.out.println("limpeza feita com sucesso!");
+    }
+
+    public void ordenarPorPrioridade(){
+        System.out.println("=== ALTA ===");
+        filtrarPorPrioridade("alta");
+        System.out.println("=== MEDIA ===");
+        filtrarPorPrioridade("media");
+        System.out.println("=== BAIXA ===");
+        filtrarPorPrioridade("baixa");
+    }
+
+    public void ordenarPorData(){
+        for(int i= 0; i < tarefas.size() - 1; i++){
+            for(int j=0; j<tarefas.size()-1-i;j++){
+
+                String data1 = tarefas.get(j).getData();
+                String data2 = tarefas.get(j+1).getData();
+
+                String[] partes1 = data1.split("/");
+                String[] partes2 = data2.split("/");
+                String dataFormatada1 = partes1[2] + "/" + partes1[1] + "/" + partes1[0];
+                String dataFormatada2 = partes2[2] + "/" + partes2[1] + "/" + partes2[0];
+
+                if(dataFormatada1.compareTo(dataFormatada2 ) > 0){
+                    Tarefas temp = tarefas.get(j);
+                    tarefas.set(j,tarefas.get(j+1));
+                    tarefas.set(j+1, temp);
+                }
+            }
+        }
+
+        System.out.println("tarefas ordenas por data com sucesso!");
+        listarTarefas();
+    }
+
+    public void tarefasEmAtraso(){
+        LocalDate hoje = LocalDate.now();
+
+        System.out.println("=== TAREFAS EM ATRASO ===");
+
+        for(int i = 0; i < tarefas.size(); i++){
+            String data1 = tarefas.get(i).getData();
+                
+            String[] partes1 = data1.split("/");
+            //String dataFormatada1 = partes1[2] + "/" + partes1[1] + "/" + partes1[0];
+            String aux1 = partes1[0];
+            String aux2 = partes1[1];
+            String aux3 = partes1[2];
+
+            int dia = Integer.parseInt(aux1);
+            int mes = Integer.parseInt(aux2);
+            int ano = Integer.parseInt(aux3);
+
+            LocalDate dataTarefa = LocalDate.of(ano,mes,dia);
+
+            if(dataTarefa.isBefore(hoje) && tarefas.get(i).getStatus().equalsIgnoreCase("pendente")){
+                System.out.println((i+1)+"ª "+tarefas.get(i).getTitulo()+";");
+            }
+            }
+        
+    }
+    
 
 }
