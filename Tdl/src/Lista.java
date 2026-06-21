@@ -378,7 +378,8 @@ public class Lista {
     }
 
     public  List<Tarefas> filtrarPorDatas(String data){
-        return tarefas.stream().filter(tarefas -> tarefas.getData().equals(data)).collect(Collectors.toList());
+        return tarefas.stream().filter(tarefas -> 
+            tarefas.getData().equals(data)).collect(Collectors.toList());
     }
     
 
