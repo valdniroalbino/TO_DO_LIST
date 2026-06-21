@@ -31,10 +31,11 @@ public class Tarefas {
         this.titulo = titulo;
     }
 
-    public LocalDateTime getData() {
-      DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/aaaa HH:mm");
+    public String getData() {
+     /* DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/aaaa HH:mm");
       
-        return LocalDateTime.parse(data, form);
+        return LocalDateTime.parse(data, form);*/
+        return data;
     }
 
     public void setData(String data) {
