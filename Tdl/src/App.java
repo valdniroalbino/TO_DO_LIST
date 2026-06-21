@@ -26,7 +26,7 @@ public class App {
                     //int id=0;
                     System.out.print("Descrição da tarefa: ");
                     String descricao = ent.nextLine();
-                    System.out.print("Data de vencimento (dd/MM/aaaa HH:mm): ");
+                    System.out.print("Data de vencimento (dd/MM/aaaa): ");
                     String data = ent.nextLine();
                     System.out.print("Prioridade (baixa/média/alta): ");
                     String prioridade = ent.nextLine();

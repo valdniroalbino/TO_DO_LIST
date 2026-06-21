@@ -1,12 +1,14 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 /*<<<<<<< HEAD
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,8 +80,8 @@ public class Lista {
                 trf.setTitulo(novoValor);
                 System.out.println("titulo atualizado com sucesso!");
             }else if(campo.equalsIgnoreCase("data")){
-                //trf.setData(novoValor);
-                try{
+                trf.setData(novoValor);
+                /*try{
                     DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/aaaa HH:mm");
                     LocalDateTime.parse(novoValor, form);
 
@@ -87,7 +89,7 @@ public class Lista {
                     System.out.println("data atualizada com succeso!");
                     }catch(Exception e){
                         System.out.println("Erro no formato! Use o formato dd/MM/aaaa HH:mm");
-                    }
+                    }*/
                 
             }else if(campo.equalsIgnoreCase("prioridade")){
                 trf.setPrioridade(novoValor);
@@ -373,6 +375,10 @@ public class Lista {
             }
             }
         
+    }
+
+    public  List<Tarefas> filtrarPorDatas(String data){
+        return tarefas.stream().filter(tarefas -> tarefas.getData().equals(data)).collect(Collectors.toList());
     }
     
 
