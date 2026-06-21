@@ -1,5 +1,6 @@
 import java.util.Scanner;
-//import java.util.Random;
+import java.util.Random;
+import java.time.LocalDateTime;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -25,7 +26,7 @@ public class App {
                     //int id=0;
                     System.out.print("Descrição da tarefa: ");
                     String descricao = ent.nextLine();
-                    System.out.print("Data de vencimento (dd/mm/aaaa): ");
+                    System.out.print("Data de vencimento (dd/MM/aaaa HH:mm): ");
                     String data = ent.nextLine();
                     System.out.print("Prioridade (baixa/média/alta): ");
                     String prioridade = ent.nextLine();

@@ -1,8 +1,14 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Lista {
     
@@ -24,9 +30,16 @@ public class Lista {
     }
 
     public void listarTarefas(){
+        LocalDateTime hoje = LocalDateTime.now();
         System.out.println("LISTA DE TAREFAS: ");
        for(int i = 0; i < tarefas.size(); i++){
+        LocalDateTime vencimento = tarefas.get(i).getData();
         System.out.printf("%dº %s; | estado: %s\n",i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getStatus());
+        if(vencimento.isBefore(hoje))
+            System.out.println("- ATRASADA");
+        else if(vencimento.isEqual(hoje))
+            System.out.println("- VENCE HOJE");
+        else System.out.println("- NO PRAZO");
        }
     }
 
@@ -38,8 +51,17 @@ public class Lista {
                 trf.setTitulo(novoValor);
                 System.out.println("titulo atualizado com sucesso!");
             }else if(campo.equalsIgnoreCase("data")){
-                trf.setData(novoValor);
-                System.out.println("data atualizada com succesoi!");
+                //trf.setData(novoValor);
+                try{
+                    DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/aaaa HH:mm");
+                    LocalDateTime.parse(novoValor, form);
+
+                    trf.setData(novoValor);
+                    System.out.println("data atualizada com succeso!");
+                    }catch(Exception e){
+                        System.out.println("Erro no formato! Use o formato dd/MM/aaaa HH:mm");
+                    }
+                
             }else if(campo.equalsIgnoreCase("prioridade")){
                 trf.setPrioridade(novoValor);
                 System.out.println("prioridade ataulizada com sucesso!");
@@ -99,11 +121,46 @@ public class Lista {
         }
     }
 
-    public void filtrarPendentes(){
+    public void filtrarPendentes(){ 
         System.out.println("=== Tarefas Pendentes ===");
         for(int i=0; i< tarefas.size(); i++){
             if(tarefas.get(i).getStatus().equalsIgnoreCase("PENDENTE")){
                 System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
+            }
+        }
+    }
+
+    public void ordemDatas(){
+        Collections.sort(tarefas, Comparator.comparing(Tarefas::getData));
+        System.out.println("Tarefas ordenadas por data!");
+    }
+
+    public void listarAtrasadas(){
+        LocalDateTime hoje = LocalDateTime.now();
+        System.out.println("\n=== Tarefas Vencidas ===");
+        for(Tarefas t : tarefas){
+            if(t.getData().isBefore(hoje)){
+                System.out.println(t.getId() + " - " + t.getTitulo());
+            }
+        }
+    }
+
+    public void listarVenceHoje(){
+        LocalDateTime hoje = LocalDateTime.now();
+        System.out.println("\n=== Vencem Hoje ===");
+        for(Tarefas t : tarefas){
+            if(t.getData().isEqual(hoje)){
+                System.out.println(t.getId() + " - " + t.getTitulo());
+            }
+        }
+    }
+
+    public void listarNoPrazo(){
+        LocalDateTime hoje = LocalDateTime.now();
+        System.out.println("\n=== Vencem Hoje ===");
+        for(Tarefas t : tarefas){
+            if(t.getData().isAfter(hoje)){
+                System.out.println(t.getId() + " - " + t.getTitulo());
             }
         }
     }

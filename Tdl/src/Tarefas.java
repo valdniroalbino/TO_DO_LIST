@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 public class Tarefas {
     private int id;
     private String titulo;
@@ -29,8 +31,10 @@ public class Tarefas {
         this.titulo = titulo;
     }
 
-    public String getData() {
-        return data;
+    public LocalDateTime getData() {
+      DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/aaaa HH:mm");
+      
+        return LocalDateTime.parse(data, form);
     }
 
     public void setData(String data) {
