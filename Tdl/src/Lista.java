@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class Lista {
     
-    private ArrayList<Tarefas> tarefas;
+    private ArrayList<Tarefas> tarefas; // para armazar a lista de tarefas. 
 
     public Lista(){
         this.tarefas = new ArrayList<>();
@@ -18,7 +18,28 @@ public class Lista {
             System.out.println("tarefa invalida!");
             return;
         }
-        int novoId = tarefas.size() + 1;
+
+        String[] dataVeri = data.split("/");
+        if(dataVeri.length != 3){
+            System.out.println("data invalida! use o formato dd/mm/aaaa");
+            return;
+        }
+
+        String dia = dataVeri[0];
+        String mes = dataVeri[1];
+        String ano = dataVeri[2];
+
+        if(dia.length() != 2 || mes.length() != 2 || ano.length() != 4){
+            System.out.println("data invalida!");
+            return;
+        }
+
+        if(!prioridade.equalsIgnoreCase("baixa") && !prioridade.equalsIgnoreCase("media") && !prioridade.equalsIgnoreCase("alta")){
+            System.out.println("prioridade invalida!use apenas: baixa, media ou alta");
+            return;
+        }
+
+        int novoId = tarefas.size() + 1;  // o id é gerado, ou seja, aqui o usuario nao interfere. 
         Tarefas trf = new Tarefas(novoId,titulo,data,prioridade);
         tarefas.add(trf);
         System.out.println("tarefa adicionada com sucesso!");
@@ -29,8 +50,10 @@ public class Lista {
        for(int i = 0; i < tarefas.size(); i++){
         System.out.printf("%dº %s; | estado: %s\n",i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getStatus());
        }
-    }
+    }//funcao para printar a lista de tarefas com tds os campos.
 
+    
+    // Atualiza um campo específico de uma tarefa existente. campo é o que queremos alterar e novoValor é a nova coisa que desejamos colocar. 
     public void atualizar(int id, String campo, String novoValor) {
         if(id >= 1 && id <= tarefas.size()){
             Tarefas trf = tarefas.get(id-1);
@@ -53,6 +76,7 @@ public class Lista {
         }
     }
     
+    //organiza novamente novamente os ids apos uma remocao para nao ter erros(lacunas)
     public void atualizarIds(){
         for(int i=0; i < tarefas.size(); i++){
             tarefas.get(i).setId(i + 1);
@@ -99,7 +123,9 @@ public class Lista {
             }
         }
     }
-  
+    
+    //Guarda todas as tarefas no ficheiro tarefas.txt.
+    //Cada tarefa é guardada numa linha com os atributos separados por ponto e vírgula.
     public void guardarTarefas(){
         try{
             PrintWriter writer = new PrintWriter("tarefas.txt");
@@ -115,6 +141,8 @@ public class Lista {
         }
     }
 
+    //Carrega as tarefas do ficheiro tarefas.txt para a lista.
+    //Cada linha é dividida pelo separador ";" para reconstruir os objetos Tarefas.
     public void carregarTarefas(){
         try{
             BufferedReader reader = new BufferedReader(new FileReader("tarefas.txt"));
@@ -134,12 +162,16 @@ public class Lista {
             }  
             reader.close();
             System.out.println("bem-vindo de volta! Tarefas carregas.");
+            contadorDeTarefas();
+            percentagem();
+
 
         }catch(IOException e){
             System.out.println("nenhuma tarefa guardada encontrada");
         }
     }
 
+    // Mostra o total de tarefas, quantas estão concluídas e quantas estão pendentes
     public void contadorDeTarefas(){
         int ctdConcluidas = 0;
         int ctdPendentes = 0;
@@ -158,6 +190,7 @@ public class Lista {
         System.out.println("pendentes: "+ctdPendentes);
     }
 
+    // Calcula e mostra a percentagem de tarefas concluídas
     public void percentagem(){
         if(tarefas.isEmpty()){
             System.out.println("0% de tarefas concluidas");
@@ -168,12 +201,25 @@ public class Lista {
             if(t.getStatus().equalsIgnoreCase("concluida"))
                 ctd++;
         }
-        int result = (ctd * 100) / tarefas.size();
+        int percentagem = (ctd * 100) / tarefas.size();
 
-        System.out.println("foi concluido "+result+"% das tarefas");
+        System.out.println("foi concluido "+percentagem+"% das tarefas");
+
+        if(percentagem == 0){
+            System.out.println("vamos comecar? Toda a grande conquista comeca com a priemira tarefa.");
+        }else if(percentagem >0 && percentagem < 50){
+            System.out.println("Estas no caminho certo. Continua, o progresso vem passo a passo.");
+        }else if(percentagem > 49 && percentagem < 100){
+            System.out.println("Grande trabalho! falta pouco para completares tudo.");
+        }else if(percentagem == 100){
+            System.out.println("Missao cumprida! Todas as tarefas foram concluidas.");
+        }else{
+            System.out.println("percentagem invalida!");
+        }
 
     }
 
+    // Filtra e mostra as tarefas com uma determinada prioridade
     public void filtrarPorPrioridade(String prioridade){
         for(int i= 0; i < tarefas.size() ; i++){
             if(tarefas.get(i).getPrioridade().equalsIgnoreCase(prioridade)){
@@ -182,8 +228,10 @@ public class Lista {
         }
     } 
 
+
+    //Remove todas as tarefas concluídas da lista.
     public void limparConcluidas(){
-        for(int i = tarefas.size() -1; i >= 0 ; i--){
+        for(int i = tarefas.size() -1; i >= 0 ; i--){ //Percorre de trás para a frente para evitar saltar elementos ao remover.
             if(tarefas.get(i).getStatus().equalsIgnoreCase("concluida"))
                 tarefas.remove(i);
         }
@@ -200,9 +248,11 @@ public class Lista {
         filtrarPorPrioridade("baixa");
     }
 
+    //Ordena as tarefas por data usando Bubble Sort.
+    //As datas são reformatadas nessa ordem contraria para facilitar na hora da comparacao usando o camparateTo
     public void ordenarPorData(){
-        for(int i= 0; i < tarefas.size() - 1; i++){
-            for(int j=0; j<tarefas.size()-1-i;j++){
+        for(int i= 0; i < tarefas.size() - 1; i++){ //"-1" pq se for sem o menos um na ultima comparacao a segunda variavel vai pular para uma variavel que nao existe. 
+            for(int j=0; j<tarefas.size()-1-i;j++){ // como é estilo bobble sorte, dps de compara vai para o final, entao esse "-i" aí evita comparar com quem ja foi organizado. 
 
                 String data1 = tarefas.get(j).getData();
                 String data2 = tarefas.get(j+1).getData();
@@ -224,6 +274,7 @@ public class Lista {
         listarTarefas();
     }
 
+    //mostra as tarefas que estao em atraso seguindo a data do dia que o utlizador estiver a testar. 
     public void tarefasEmAtraso(){
         LocalDate hoje = LocalDate.now();
 
