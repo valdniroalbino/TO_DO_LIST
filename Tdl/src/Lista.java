@@ -80,6 +80,15 @@ public class Lista {
             System.out.println("ID inexistente!");
         }
     }
+
+    public void marcarPendente(int id){
+         if(id>=1 && id <= tarefas.size()){
+            tarefas.get(id-1).setStatus("PENDENTE");
+            System.out.println("Tarefa pendente!");
+        }else{
+            System.out.println("ID inexistente!");
+        }
+    }
     
     public void filtrarConcluidas(){
         System.out.println("=== Tarefas Concluídas ===");
