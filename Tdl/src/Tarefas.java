@@ -47,6 +47,7 @@ public class Tarefas {
         this.categoria = categoria;
     }
 
+
     public String getPrioridade() {
         return prioridade;
     }

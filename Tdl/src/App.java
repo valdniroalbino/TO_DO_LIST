@@ -5,25 +5,27 @@ public class App {
         Scanner ent = new Scanner(System.in);
         Lista list = new Lista();
         int op;
+
           
         do{
-            System.out.println("====== MENU TO-DO-LIST ======");
-            System.out.println("1. Adicionar Tarefa");
-            System.out.println("2. Ver Tarefas");
-            System.out.println("3. Remover Tarefa");
-            System.out.println("4. Marcar Tarefa Concluída");
-            System.out.println("5. Filtrar Pendentes");
-            System.out.println("6. Filtrar Concluídas");
-            System.out.println("7. Atualizar Tarefa");
-            System.out.println("0. Sair");
-            System.out.print("Selecione a opção: ");
-            op = ent.nextInt();
+            System.out.println("=============== MENU TO-DO-LIST ===============");
+            System.out.println("               1. Adicionar Tarefa");
+            System.out.println("               2. Ver Tarefas");
+            System.out.println("               3. Remover Tarefa");
+            System.out.println("               4. Marcar Tarefa Concluída");
+            System.out.println("               5. Filtrar Pendentes"); //dentro do ver
+            System.out.println("               6. Filtrar Concluídas"); //dentro do ver
+            System.out.println("               7. Atualizar Tarefa");
+            System.out.println("               0. Sair");
+            System.out.println("===============================================");
+             System.out.print("               Selecione a opção: ");
+              op = ent.nextInt();
             ent.nextLine();
+            System.out.println("===============================================");
+            System.out.println();
             switch (op) {
                  case 1:
-                    System.out.println("ID da tarefa: ");
-                    int id = ent.nextInt();
-                    ent.nextLine();  
+                
                     System.out.print("Título da tarefa: ");
                     String titulo = ent.nextLine();
                     System.out.print("Data de vencimento (dd/mm/yyyy): ");
@@ -53,10 +55,7 @@ public class App {
                             break;
 
                         case 4:
-
-                         System.out.print("Especifique a categoria: ");
-                         String cat = ent.nextLine();
-                            categoria = cat;
+                            categoria = "Outros";
                             break;
 
                         default:
@@ -67,8 +66,8 @@ public class App {
 
                     System.out.print("Prioridade (baixa/média/alta): ");
                     String prioridade = ent.nextLine();
-                    Tarefas task = new Tarefas(id, titulo, data, categoria, prioridade);
-                    list.adicionarTarefa(task);
+                    list.adicionarTarefa(titulo, data, categoria, prioridade);
+
                  break;
 
                  case 2:
@@ -120,9 +119,12 @@ public class App {
                 default:
                     System.out.println("Opção inválida.");
             }
+            System.out.println();
+            
         }while (op!=0); 
+        
+        
 
 
     }
 }
- 
