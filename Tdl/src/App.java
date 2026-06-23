@@ -28,52 +28,95 @@ public class App {
          
             switch (op) {
                  case 1:
-                    System.out.print("Título da tarefa: ");
-                    String titulo = ent.nextLine();
-                     System.out.println("===============================================");
-                    System.out.print("Data de vencimento (dd/mm/yyyy): ");
-                    String data = ent.nextLine();
- System.out.println("===============================================");
-                    System.out.println("Categoria da tarefa:");
-                    System.out.println("===============================================");
-                    System.out.println();
-                        System.out.println("                1. Casa");
-                        System.out.println("                2. Estudos");
-                        System.out.println("                3. Trabalho");
-                        System.out.println("                4. Outros");
-                        System.out.println();
- System.out.println("===============================================");
- System.out.print("Escolher opção: ");
-                        int opCategoria = ent.nextInt();
-                        ent.nextLine();
- System.out.println("===============================================");
-                        String categoria = "";
-                        switch(opCategoria){
-                        case 1:
-                            categoria = "Casa";
-                            break;
+                  String titulo;
+                   while(true){
 
-                        case 2:
-                            categoria = "Estudos";
-                            break;
+                System.out.print("Título: ");
+                    titulo = ent.nextLine();
 
-                        case 3:
-                            categoria = "Trabalho";
-                            break;
-
-                        case 4:
-                            categoria = "Outros";
-                            break;
-
-                        default:
-
-                        System.out.println("Categoria inválida");
-                           
+                    if(list.validarTitulo(titulo)){
+                        break;
                     }
 
+}
+                     System.out.println("===============================================");
+                     String data;
 
-                    System.out.print("Prioridade (baixa/média/alta): ");
-                    String prioridade = ent.nextLine();
+                  while(true){
+
+                    System.out.print("Data (dd/mm/aaaa): ");
+                   data = ent.nextLine();
+
+                    if(list.validarData(data)){
+                        break;
+                    }
+
+}
+int opCategoria;
+
+while (true) {
+
+    System.out.println("===============================================");
+    System.out.println("Categoria da tarefa:");
+    System.out.println("===============================================");
+    System.out.println("                    1. Casa");
+    System.out.println("                    2. Estudos");
+    System.out.println("                    3. Trabalho");
+    System.out.println("                    4. Outros");
+    System.out.println("===============================================");
+    System.out.print("Escolher opção: ");
+
+    try {
+        opCategoria = Integer.parseInt(ent.nextLine());
+    } catch (NumberFormatException e) {
+        System.out.println("⚠️ Entrada inválida! Digite um número entre 1 e 4.");
+        continue;
+    }
+
+    if (opCategoria < 1 || opCategoria > 4) {
+        System.out.println("⚠️ Opção inválida! Escolha entre 1 e 4.");
+        continue;
+    }
+
+    break;
+}
+
+String categoria;
+
+switch (opCategoria) {
+
+    case 1:
+        categoria = "Casa";
+        break;
+
+    case 2:
+        categoria = "Estudos";
+        break;
+
+    case 3:
+        categoria = "Trabalho";
+        break;
+
+    case 4:
+        categoria = "Outros";
+        break;
+
+    default:
+        categoria = ""; // nunca chega aqui, mas evita warning
+}
+
+    String prioridade;
+
+    while(true){
+        System.out.println("===============================================");
+        System.out.print("Prioridade (baixa/media/alta): ");
+        prioridade = ent.nextLine();
+
+        if(list.validarPrioridade(prioridade)){
+            break;
+        }
+    }
+
                     System.out.println("===============================================");
                     list.adicionarTarefa(titulo, data, categoria, prioridade);
 

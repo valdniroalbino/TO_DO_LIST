@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-//import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,73 +15,148 @@ public class Lista {
         this.tarefas = new ArrayList<>();
     }
 
-    public boolean adicionarTarefa(String titulo, String data, String categoria, String prioridade){
-        if(titulo == null || titulo.trim().isEmpty()){
-            System.out.println("tarefa invalida!");
-            return false;
-        }
 
-        String[] dataVeri = data.split("/");
-        if(dataVeri.length != 3){
-            System.out.println("data invalida! use o formato dd/mm/aaaa");
-            return false;
-        }
+public boolean validarTitulo(String titulo){
 
-        String dia = dataVeri[0];
-        String mes = dataVeri[1];
-        String ano = dataVeri[2];
-
-        //LocalDate hoje = LocalDate.now();
-        
-
-        // validacao se sao numeros
-        if(!dia.matches("\\d+") || !mes.matches("\\d+") || !ano.matches("\\d+")){
-            System.out.println("data invalida! a data deve conter apenas numeros.");
-            return false;
-        }
-
-        int diaInt = Integer.parseInt(dia);
-        int mesInt = Integer.parseInt(mes);
-        int anoInt = Integer.parseInt(ano);
-
-
-        if(diaInt < 1 || diaInt > 31){
-        System.out.println("dia invalido! deve ser entre 01 e 31.");
+    if(titulo == null || titulo.trim().isEmpty()){
+        System.out.println("⚠️ O título não pode estar vazio!");
         return false;
-        }
-        if(mesInt < 1 || mesInt > 12){
-            System.out.println("mes invalido! deve ser entre 01 e 12.");
-            return false;
-        }
-        if(anoInt < 2026){
-            System.out.println("ano invalido! deve ser igual ou superior a 2026.");
-            return false;
-        }
-        //aqui vamos validar apenas data do dia de hoje ou futuras.
-        LocalDate hoje = LocalDate.now();
-        LocalDate dataTarefa = LocalDate.of(anoInt, mesInt, diaInt);
-
-        if(dataTarefa.isBefore(hoje)){
-            System.out.println("Essa data ja esta no passado! tente novamente com uma data presente ou futura.");
-            return false;
-        }
-
-        if(!prioridade.equalsIgnoreCase("baixa") && !prioridade.equalsIgnoreCase("media") && !prioridade.equalsIgnoreCase("alta")){
-            System.out.println("prioridade invalida!use apenas: baixa, media ou alta");
-            return false;
-        }
-
-        
-
-        // se chegou ate aqui, quer dizer que esta tudo valido. Adiciona 
-        int novoId = tarefas.size() + 1;  // o id é gerado, ou seja, aqui o usuario nao interfere. 
-        Tarefas trf = new Tarefas(novoId,titulo,data,categoria,prioridade);
-        tarefas.add(trf);
-        System.out.println("===============================================");
-        System.out.println("       Tarefa adicionada com sucesso!✅");
-        System.out.println("===============================================");
-        return true;
     }
+
+
+    if(titulo.matches("\\d+")){
+        System.out.println("⚠️ O título não pode ser apenas números!");
+        return false;
+    }
+
+
+    return true;
+}
+
+
+public boolean validarData(String data){
+
+    String[] dataVeri = data.split("/");
+
+    if(dataVeri.length != 3){
+        System.out.println("Data inválida! Use o formato dd/mm/aaaa.");
+        return false;
+    }
+
+
+    String dia = dataVeri[0];
+    String mes = dataVeri[1];
+    String ano = dataVeri[2];
+
+
+    // verifica se são números
+    if(!dia.matches("\\d+") || 
+       !mes.matches("\\d+") || 
+       !ano.matches("\\d+")){
+
+        System.out.println("Data inválida! A data deve conter apenas números.");
+        return false;
+    }
+
+
+    int diaInt = Integer.parseInt(dia);
+    int mesInt = Integer.parseInt(mes);
+    int anoInt = Integer.parseInt(ano);
+
+
+
+    if(diaInt < 1 || diaInt > 31){
+
+        System.out.println("Dia inválido! Deve estar entre 01 e 31.");
+        return false;
+    }
+
+
+    if(mesInt < 1 || mesInt > 12){
+
+        System.out.println("Mês inválido! Deve estar entre 01 e 12.");
+        return false;
+    }
+
+
+    if(anoInt < 2026){
+
+        System.out.println("Ano inválido! Deve ser igual ou superior a 2026.");
+        return false;
+    }
+
+
+
+    LocalDate hoje = LocalDate.now();
+
+    LocalDate dataTarefa = LocalDate.of(anoInt, mesInt, diaInt);
+
+
+    if(dataTarefa.isBefore(hoje)){
+
+        System.out.println("Essa data já está no passado!");
+        return false;
+    }
+
+
+    return true;
+}
+
+
+public boolean validarPrioridade(String prioridade){
+
+    if(prioridade == null || prioridade.trim().isEmpty()){
+
+        System.out.println("⚠️ A prioridade não pode estar vazia!");
+        return false;
+
+    }
+
+
+    if(!prioridade.equalsIgnoreCase("baixa") &&
+       !prioridade.equalsIgnoreCase("media") &&
+       !prioridade.equalsIgnoreCase("alta")){
+
+
+        System.out.println("⚠️ Prioridade inválida! Use apenas: baixa, media ou alta.");
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+   public boolean adicionarTarefa(String titulo, String data, String categoria, String prioridade){
+
+    if(!validarTitulo(titulo)){
+        return false;
+    }
+
+    if(!validarData(data)){
+        return false;
+    }
+
+
+    if(!validarPrioridade(prioridade)){
+        return false;
+    }
+
+    int novoId = tarefas.size() + 1;
+
+    Tarefas trf = new Tarefas(novoId, titulo, data, categoria, prioridade);
+
+    tarefas.add(trf);
+
+    System.out.println("===============================================");
+    System.out.println("       Tarefa adicionada com sucesso!✅");
+    System.out.println("===============================================");
+
+    return true;
+}
+
 
     public void listarTarefas(){
        // LocalDateTime hoje = LocalDateTime.now();
@@ -290,16 +364,30 @@ public class Lista {
 
 public void procurarTarefa(String titulo){
 
+    // Verifica se a lista está vazia
+    if(tarefas.isEmpty()){
+
+        System.out.println("===============================================");
+        System.out.println("        A lista de tarefas está vazia!");
+        System.out.println("===============================================");
+
+        return;
+    }
+
+
     boolean encontrada = false;
 
+
+    // Percorre a lista procurando pelo título
     for(int i = 0; i < tarefas.size(); i++){
 
         Tarefas trf = tarefas.get(i);
 
+
         if(trf.getTitulo().equalsIgnoreCase(titulo)){
 
             System.out.println("===============================================");
-            System.out.println("              Tarefa encontrada!");
+            System.out.println("             TAREFA ENCONTRADA");
             System.out.println("===============================================");
 
             System.out.println("Índice: " + (i + 1));
@@ -309,14 +397,18 @@ public void procurarTarefa(String titulo){
             System.out.println("===============================================");
 
             encontrada = true;
+
+            break; // para a procura depois de encontrar
         }
+
     }
 
 
+    // Caso percorra tudo e não encontre
     if(!encontrada){
 
         System.out.println("===============================================");
-        System.out.println("        Tarefa não encontrada!");
+        System.out.println("       A tarefa \"" + titulo + "\" não foi encontrada!");
         System.out.println("===============================================");
 
     }
