@@ -78,23 +78,28 @@ public class Lista {
         int novoId = tarefas.size() + 1;  // o id é gerado, ou seja, aqui o usuario nao interfere. 
         Tarefas trf = new Tarefas(novoId,titulo,data,categoria,prioridade);
         tarefas.add(trf);
-        System.out.println("tarefa adicionada com sucesso!");
+        System.out.println("===============================================");
+        System.out.println("       Tarefa adicionada com sucesso!✅");
+        System.out.println("===============================================");
         return true;
     }
 
     public void listarTarefas(){
-
-        if(tarefas.size() == 0 ){
+       // LocalDateTime hoje = LocalDateTime.now();
+       if(tarefas.size() == 0 ){
             System.out.println("lista de tarefas vazia!");
             return;
         }
-        System.out.println("=== LISTA DE TAREFAS ===");
-        for(int i = 0; i < tarefas.size(); i++){
-
-            System.out.printf("%dº titulo: %s; | prioridade: %s| estado: %s| data: %s| categoria: %s\n"
+         System.out.println("===============================================");
+        System.out.println("                LISTA DE TAREFAS");
+          System.out.println("===============================================");
+       for(int i = 0; i < tarefas.size(); i++){
+       // LocalDateTime vencimento = tarefas.get(i).getData();
+        System.out.printf("%dº titulo: %s; | prioridade: %s| estado: %s| data: %s| categoria: %s\n"
             ,i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getPrioridade(),tarefas.get(i).getStatus(),
             tarefas.get(i).getData(),tarefas.get(i).getCategoria());
-        }
+          System.out.println("===============================================");
+       }
     }//funcao para printar a lista de tarefas com tds os campos.
 
 
@@ -129,7 +134,9 @@ public class Lista {
                     return;
                 } 
                 trf.setTitulo(novoValor);
-                System.out.println("titulo atualizado com sucesso!");
+                    System.out.println("===============================================");
+                System.out.println("           Titulo atualizado com sucesso!");
+                    System.out.println("===============================================");
             }else if(campo.equalsIgnoreCase("data")){
                 String[] dataVeri = novoValor.split("/");
             if(dataVeri.length != 3){
@@ -184,13 +191,19 @@ public class Lista {
                     return ;
                 }
                 trf.setPrioridade(novoValor);
-                System.out.println("prioridade ataulizada com sucesso!");
+                    System.out.println("===============================================");
+                System.out.println("          prioridade ataulizada com sucesso!");
+                    System.out.println("===============================================");
             }else{
+                    System.out.println("===============================================");
                 System.out.println("campo invalide! use: titulo, data ou prioridade");
+                    System.out.println("===============================================");
             }
              
         }else{
-            System.out.println("id invalido!");
+                System.out.println("===============================================");
+            System.out.println(                   "id invalido!");
+                System.out.println("===============================================");
         }
     }
     
@@ -210,9 +223,13 @@ public class Lista {
         if(id > 0 && tarefas.size() >= id){
             tarefas.remove(id-1); // -1 pq isso é arraylist começa do 0
             atualizarIds();
-            System.out.println("tarefa removida com sucesso!");
+              System.out.println("===============================================");
+            System.out.println("         Tarefa removida com sucesso!✅");
+              System.out.println("===============================================");
         }else{
-            System.out.println("id invalido!");
+              System.out.println("===============================================");
+            System.out.println("                  Id invalido!⚠️");
+              System.out.println("===============================================");
         } 
     }
 
@@ -223,38 +240,88 @@ public class Lista {
     public void marcarConcluida(int id){
         if(id>=1 && id <= tarefas.size()){
             tarefas.get(id-1).setStatus("CONCLUIDA");
-            System.out.println("Tarefa concluída!");
+             System.out.println("===============================================");
+            System.out.println("               Tarefa concluída!");
+               System.out.println("===============================================");
         }else{
-            System.out.println("ID inexistente!");
+         System.out.println("===============================================");
+            System.out.println("               ID inexistente!");
+               System.out.println("===============================================");
         }
     }
 
     public void marcarPendente(int id){
          if(id>=1 && id <= tarefas.size()){
             tarefas.get(id-1).setStatus("PENDENTE");
-            System.out.println("Tarefa pendente!");
+               System.out.println("===============================================");
+            System.out.println("                 Tarefa pendente!");
+               System.out.println("===============================================");
         }else{
-            System.out.println("ID inexistente!");
+               System.out.println("===============================================");
+            System.out.println("                 ID inexistente!");
+               System.out.println("===============================================");
         }
     }
     
     public void filtrarConcluidas(){
-        System.out.println("=== Tarefas Concluídas ===");
+       
         for(int i=0; i< tarefas.size(); i++){
             if(tarefas.get(i).getStatus().equalsIgnoreCase("CONCLUÍDA")){
+                   System.out.println("===============================================");
                 System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
+                   System.out.println("===============================================");
             }
         }
     }
 
     public void filtrarPendentes(){ 
-        System.out.println("=== Tarefas Pendentes ===");
+    
         for(int i=0; i< tarefas.size(); i++){
             if(tarefas.get(i).getStatus().equalsIgnoreCase("PENDENTE")){
+                   System.out.println("===============================================");
                 System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
+                   System.out.println("===============================================");
             }
         }
     }
+
+
+    //Procurar a tarefa, caso encontre, retorna o indice dela, o titulo e a situação
+
+public void procurarTarefa(String titulo){
+
+    boolean encontrada = false;
+
+    for(int i = 0; i < tarefas.size(); i++){
+
+        Tarefas trf = tarefas.get(i);
+
+        if(trf.getTitulo().equalsIgnoreCase(titulo)){
+
+            System.out.println("===============================================");
+            System.out.println("              Tarefa encontrada!");
+            System.out.println("===============================================");
+
+            System.out.println("Índice: " + (i + 1));
+            System.out.println("Título: " + trf.getTitulo());
+            System.out.println("Estado: " + trf.getStatus());
+
+            System.out.println("===============================================");
+
+            encontrada = true;
+        }
+    }
+
+
+    if(!encontrada){
+
+        System.out.println("===============================================");
+        System.out.println("        Tarefa não encontrada!");
+        System.out.println("===============================================");
+
+    }
+
+}
 
     /*public void listarVenceHoje(){
         LocalDateTime hoje = LocalDateTime.now();
