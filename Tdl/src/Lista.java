@@ -3,15 +3,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+//import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-/*<<<<<<< HEAD
-import java.util.Collections;
-import java.util.Comparator;
-=======
-import java.time.LocalDate;
->>>>>>> ce5bce0e7eb5babc6a348144aa4739ac99453d1a*/
 
 public class Lista {
     
@@ -21,16 +16,16 @@ public class Lista {
         this.tarefas = new ArrayList<>();
     }
 
-    public void adicionarTarefa(String titulo, String data, String categoria, String prioridade){
-        if(titulo == null || titulo.isEmpty()){
+    public boolean adicionarTarefa(String titulo, String data, String categoria, String prioridade){
+        if(titulo == null || titulo.trim().isEmpty()){
             System.out.println("tarefa invalida!");
-            return;
+            return false;
         }
 
         String[] dataVeri = data.split("/");
         if(dataVeri.length != 3){
             System.out.println("data invalida! use o formato dd/mm/aaaa");
-            return;
+            return false;
         }
 
         String dia = dataVeri[0];
@@ -40,36 +35,87 @@ public class Lista {
         //LocalDate hoje = LocalDate.now();
         
 
-        if(dia.length() != 2 || mes.length() != 2 || ano.length() != 4){
-            if((Integer.parseInt(dia) < 1 || Integer.parseInt(dia) > 31  ) && (Integer.parseInt(mes) < 1 || Integer.parseInt(mes) > 12) && (Integer.parseInt(ano) < 2026) )
-                System.out.println("data invalida!");
-             return;
+        // validacao se sao numeros
+        if(!dia.matches("\\d+") || !mes.matches("\\d+") || !ano.matches("\\d+")){
+            System.out.println("data invalida! a data deve conter apenas numeros.");
+            return false;
+        }
+
+        int diaInt = Integer.parseInt(dia);
+        int mesInt = Integer.parseInt(mes);
+        int anoInt = Integer.parseInt(ano);
+
+
+        if(diaInt < 1 || diaInt > 31){
+        System.out.println("dia invalido! deve ser entre 01 e 31.");
+        return false;
+        }
+        if(mesInt < 1 || mesInt > 12){
+            System.out.println("mes invalido! deve ser entre 01 e 12.");
+            return false;
+        }
+        if(anoInt < 2026){
+            System.out.println("ano invalido! deve ser igual ou superior a 2026.");
+            return false;
+        }
+        //aqui vamos validar apenas data do dia de hoje ou futuras.
+        LocalDate hoje = LocalDate.now();
+        LocalDate dataTarefa = LocalDate.of(anoInt, mesInt, diaInt);
+
+        if(dataTarefa.isBefore(hoje)){
+            System.out.println("Essa data ja esta no passado! tente novamente com uma data presente ou futura.");
+            return false;
         }
 
         if(!prioridade.equalsIgnoreCase("baixa") && !prioridade.equalsIgnoreCase("media") && !prioridade.equalsIgnoreCase("alta")){
             System.out.println("prioridade invalida!use apenas: baixa, media ou alta");
-            return;
+            return false;
         }
 
+        
+
+        // se chegou ate aqui, quer dizer que esta tudo valido. Adiciona 
         int novoId = tarefas.size() + 1;  // o id é gerado, ou seja, aqui o usuario nao interfere. 
         Tarefas trf = new Tarefas(novoId,titulo,data,categoria,prioridade);
         tarefas.add(trf);
         System.out.println("tarefa adicionada com sucesso!");
+        return true;
     }
 
     public void listarTarefas(){
-       // LocalDateTime hoje = LocalDateTime.now();
-        System.out.println("LISTA DE TAREFAS: ");
-       for(int i = 0; i < tarefas.size(); i++){
-       // LocalDateTime vencimento = tarefas.get(i).getData();
-        System.out.printf("%dº %s; | estado: %s\n",i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getStatus());
-        /*if(vencimento.isBefore(hoje))
-            System.out.println("- ATRASADA");
-        else if(vencimento.isEqual(hoje))
-            System.out.println("- VENCE HOJE");
-        else System.out.println("- NO PRAZO");*/
-       }
+
+        if(tarefas.size() == 0 ){
+            System.out.println("lista de tarefas vazia!");
+            return;
+        }
+        System.out.println("=== LISTA DE TAREFAS ===");
+        for(int i = 0; i < tarefas.size(); i++){
+
+            System.out.printf("%dº titulo: %s; | prioridade: %s| estado: %s| data: %s| categoria: %s\n"
+            ,i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getPrioridade(),tarefas.get(i).getStatus(),
+            tarefas.get(i).getData(),tarefas.get(i).getCategoria());
+        }
     }//funcao para printar a lista de tarefas com tds os campos.
+
+
+    public void listarPorCategoria(String categoria){
+        if(tarefas.size() == 0){
+            System.out.println("lista de tarefas vazia!");
+            return;
+        }
+        if((categoria == null || categoria.trim().isEmpty()) && !categoria.equalsIgnoreCase("casa") && !categoria.equalsIgnoreCase("trabalho") && !categoria.equalsIgnoreCase("estudos") && !categoria.equalsIgnoreCase("outros")){
+            System.out.println("categoria mal digitada! opcao validas: : Casa, Estudos, trabalho ou outros.");
+            return;
+        }
+
+        for(int i = 0; i < tarefas.size(); i++){
+            if(tarefas.get(i).getCategoria().equalsIgnoreCase(categoria)){
+                System.out.printf("%dº titulo: %s; | prioridade: %s| estado: %s| data: %s\n"
+                ,i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getPrioridade(),tarefas.get(i).getStatus(),
+                tarefas.get(i).getData());
+            }
+        }
+    }
 
     
     // Atualiza um campo específico de uma tarefa existente. campo é o que queremos alterar e novoValor é a nova coisa que desejamos colocar. 
@@ -78,21 +124,65 @@ public class Lista {
             Tarefas trf = tarefas.get(id-1);
 
             if(campo.equalsIgnoreCase("titulo")){
+                if(novoValor == null || novoValor.trim().isEmpty()){
+                    System.out.println("titulo invalido!");
+                    return;
+                } 
                 trf.setTitulo(novoValor);
                 System.out.println("titulo atualizado com sucesso!");
             }else if(campo.equalsIgnoreCase("data")){
-                trf.setData(novoValor);
-                /*try{
-                    DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/aaaa HH:mm");
-                    LocalDateTime.parse(novoValor, form);
+                String[] dataVeri = novoValor.split("/");
+            if(dataVeri.length != 3){
+                System.out.println("data invalida! use o formato dd/mm/aaaa");
+                return;
+            }
 
-                    trf.setData(novoValor);
-                    System.out.println("data atualizada com succeso!");
-                    }catch(Exception e){
-                        System.out.println("Erro no formato! Use o formato dd/MM/aaaa HH:mm");
-                    }*/
-                
+            String dia = dataVeri[0];
+            String mes = dataVeri[1];
+            String ano = dataVeri[2];
+
+            //LocalDate hoje = LocalDate.now();
+            
+
+            // validacao se sao numeros
+            if(!dia.matches("\\d+") || !mes.matches("\\d+") || !ano.matches("\\d+")){
+                System.out.println("data invalida! a data deve conter apenas numeros.");
+                return;
+            }
+
+            int diaInt = Integer.parseInt(dia);
+            int mesInt = Integer.parseInt(mes);
+            int anoInt = Integer.parseInt(ano);
+            
+
+            if(diaInt < 1 || diaInt > 31){
+            System.out.println("dia invalido! deve ser entre 01 e 31.");
+            return ;
+            }
+            if(mesInt < 1 || mesInt > 12){
+                System.out.println("mes invalido! deve ser entre 01 e 12.");
+                return;
+            }
+            if(anoInt < 2026){
+                System.out.println("ano invalido! deve ser igual ou superior a 2026.");
+                return;
+            }
+            //aqui vamos validar apenas data do dia de hoje ou futuras.
+            LocalDate hoje = LocalDate.now();
+            LocalDate dataTarefa = LocalDate.of(anoInt, mesInt, diaInt);
+
+            if(dataTarefa.isBefore(hoje)){
+                System.out.println("Essa data ja esta no passado! tente novamente com uma data presente ou futura.");
+                return;
+            }
+
+            trf.setData(novoValor);
+            System.out.println("atualizacao feita com sucesso!");
             }else if(campo.equalsIgnoreCase("prioridade")){
+                if(!novoValor.equalsIgnoreCase("baixa") && !novoValor.equalsIgnoreCase("media") && !novoValor.equalsIgnoreCase("alta")){
+                    System.out.println("prioridade invalida!use apenas: baixa, media ou alta");
+                    return ;
+                }
                 trf.setPrioridade(novoValor);
                 System.out.println("prioridade ataulizada com sucesso!");
             }else{
@@ -112,7 +202,12 @@ public class Lista {
     }
 
     public void removerTarefa(int id) { //wis, o nome id vem pq é o que o usuario irá ver aao selecionar a tarefa que deseja remover. 
-        if(id >= 0 && tarefas.size() > id){
+        if(tarefas.size() == 0){
+            System.out.println("lista de tarefas vazia");
+            return;
+        }
+        
+        if(id > 0 && tarefas.size() >= id){
             tarefas.remove(id-1); // -1 pq isso é arraylist começa do 0
             atualizarIds();
             System.out.println("tarefa removida com sucesso!");
@@ -127,7 +222,7 @@ public class Lista {
 
     public void marcarConcluida(int id){
         if(id>=1 && id <= tarefas.size()){
-            tarefas.get(id-1).setStatus("CONCLUÍDA");
+            tarefas.get(id-1).setStatus("CONCLUIDA");
             System.out.println("Tarefa concluída!");
         }else{
             System.out.println("ID inexistente!");
@@ -160,24 +255,8 @@ public class Lista {
             }
         }
     }
-/*<<<<<<< HEAD
 
-    public void ordemDatas(){
-        Collections.sort(tarefas, Comparator.comparing(Tarefas::getData));
-        System.out.println("Tarefas ordenadas por data!");
-    }
-
-    public void listarAtrasadas(){
-        LocalDateTime hoje = LocalDateTime.now();
-        System.out.println("\n=== Tarefas Vencidas ===");
-        for(Tarefas t : tarefas){
-            if(t.getData().isBefore(hoje)){
-                System.out.println(t.getId() + " - " + t.getTitulo());
-            }
-        }
-    }
-
-    public void listarVenceHoje(){
+    /*public void listarVenceHoje(){
         LocalDateTime hoje = LocalDateTime.now();
         System.out.println("\n=== Vencem Hoje ===");
         for(Tarefas t : tarefas){
@@ -195,19 +274,18 @@ public class Lista {
                 System.out.println(t.getId() + " - " + t.getTitulo());
             }
         }
-    }
+    }*/
 
-=======
+
     
     //Guarda todas as tarefas no ficheiro tarefas.txt.
     //Cada tarefa é guardada numa linha com os atributos separados por ponto e vírgula.
->>>>>>> ce5bce0e7eb5babc6a348144aa4739ac99453d1a*/
     public void guardarTarefas(){
         try{
             PrintWriter writer = new PrintWriter("tarefas.txt");
             for(int i = 0; i < tarefas.size(); i++){
                 Tarefas trf = tarefas.get(i);
-                writer.println(trf.getId() + ";" + trf.getTitulo() + ";" + trf.getData() + ";" + trf.getPrioridade() + ";" + trf.getStatus());
+                writer.println(trf.getId() + ";" + trf.getTitulo() + ";" + trf.getData() + ";" +trf.getCategoria()+ ";" + trf.getPrioridade() + ";" + trf.getStatus());
 
             }
             writer.close();
@@ -228,8 +306,8 @@ public class Lista {
                 int id = Integer.parseInt(partes[0]); // veio como String, converto para int pq as outras funcoes esperam por um int
                 String titulo = partes[1];
                 String data = partes[2];
-                String prioridade = partes[3];
-                String categoria = partes[4];
+                String categoria = partes[3];
+                String prioridade = partes[4];
                 String estado = partes[5];
                 Tarefas trf = new Tarefas(id,titulo,data,categoria,prioridade);
                 trf.setStatus(estado);
@@ -250,6 +328,11 @@ public class Lista {
 
     // Mostra o total de tarefas, quantas estão concluídas e quantas estão pendentes
     public void contadorDeTarefas(){
+
+        if(tarefas.size() == 0 ){
+            System.out.println("lista de tarefas vazia!");
+            return;
+        }
         int ctdConcluidas = 0;
         int ctdPendentes = 0;
 
@@ -298,9 +381,21 @@ public class Lista {
 
     // Filtra e mostra as tarefas com uma determinada prioridade
     public void filtrarPorPrioridade(String prioridade){
+
+        if(tarefas.size() == 0){
+            System.out.println("Lista vazia!");
+            return;
+        }
+
+        if(!prioridade.equalsIgnoreCase("baixa") && !prioridade.equalsIgnoreCase("media") && !prioridade.equalsIgnoreCase("alta")){
+            System.out.println("prioridade invalida!opcoes validas: baixa, media ou alta");
+            return;
+        }
         for(int i= 0; i < tarefas.size() ; i++){
             if(tarefas.get(i).getPrioridade().equalsIgnoreCase(prioridade)){
-                System.out.println((i+1)+ "º "+tarefas.get(i).getTitulo()+";");
+                System.out.printf("%dº titulo: %s; | prioridade: %s| estado: %s| data: %s| categoria: %s\n"
+                ,i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getPrioridade(),tarefas.get(i).getStatus(),
+                tarefas.get(i).getData(),tarefas.get(i).getCategoria());
             }
         }
     } 
@@ -308,6 +403,23 @@ public class Lista {
 
     //Remove todas as tarefas concluídas da lista.
     public void limparConcluidas(){
+
+        if(tarefas.size() == 0){
+            System.out.println("lista vazia!");
+            return;
+        }
+
+        int ctd = 0;
+
+        for(int i = 0; i < tarefas.size(); i++){
+            if(tarefas.get(i).getStatus().equalsIgnoreCase("concluida")) ctd++;
+        }
+
+        if(ctd == 0){
+            System.out.println("nao ha tarefas concluidas");
+            return;
+        }
+
         for(int i = tarefas.size() -1; i >= 0 ; i--){ //Percorre de trás para a frente para evitar saltar elementos ao remover.
             if(tarefas.get(i).getStatus().equalsIgnoreCase("concluida"))
                 tarefas.remove(i);
@@ -317,6 +429,11 @@ public class Lista {
     }
 
     public void ordenarPorPrioridade(){
+        if(tarefas.size() == 0){
+            System.out.println("lista vazia!");
+            return;
+        }
+
         System.out.println("=== ALTA ===");
         filtrarPorPrioridade("alta");
         System.out.println("=== MEDIA ===");
@@ -328,6 +445,11 @@ public class Lista {
     //Ordena as tarefas por data usando Bubble Sort.
     //As datas são reformatadas nessa ordem contraria para facilitar na hora da comparacao usando o camparateTo
     public void ordenarPorData(){
+        if(tarefas.size() == 0){
+            System.out.println("lista vazia!");
+            return;
+        }
+
         for(int i= 0; i < tarefas.size() - 1; i++){ //"-1" pq se for sem o menos um na ultima comparacao a segunda variavel vai pular para uma variavel que nao existe. 
             for(int j=0; j<tarefas.size()-1-i;j++){ // como é estilo bobble sorte, dps de compara vai para o final, entao esse "-i" aí evita comparar com quem ja foi organizado. 
 
@@ -353,6 +475,12 @@ public class Lista {
 
     //mostra as tarefas que estao em atraso seguindo a data do dia que o utlizador estiver a testar. 
     public void tarefasEmAtraso(){
+
+        if(tarefas.size() == 0){
+            System.out.println("lista vazia!");
+            return;
+        }
+
         LocalDate hoje = LocalDate.now();
 
         System.out.println("=== TAREFAS EM ATRASO ===");
@@ -370,10 +498,13 @@ public class Lista {
             int mes = Integer.parseInt(aux2);
             int ano = Integer.parseInt(aux3);
 
+
             LocalDate dataTarefa = LocalDate.of(ano,mes,dia);
 
             if(dataTarefa.isBefore(hoje) && tarefas.get(i).getStatus().equalsIgnoreCase("pendente")){
-                System.out.println((i+1)+"ª "+tarefas.get(i).getTitulo()+";");
+                System.out.printf("%dº titulo: %s; | prioridade: %s| estado: %s| data: %s| categoria: %s\n"
+                ,i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getPrioridade(),tarefas.get(i).getStatus(),
+                tarefas.get(i).getData(),tarefas.get(i).getCategoria());
             }
             }
         
