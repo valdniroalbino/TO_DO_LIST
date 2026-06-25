@@ -338,25 +338,33 @@ public boolean validarPrioridade(String prioridade){
     }
     
     public void filtrarConcluidas(){
-       
-        for(int i=0; i< tarefas.size(); i++){
-            if(tarefas.get(i).getStatus().equalsIgnoreCase("CONCLUÍDA")){
+       if(tarefas.isEmpty()){
+        System.out.println("Lista Vazia!");
+       }else{
+            for(int i=0; i< tarefas.size(); i++){
+             if(tarefas.get(i).getStatus().equalsIgnoreCase("CONCLUÍDA")){
                    System.out.println("===============================================");
-                System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
+                   System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
                    System.out.println("===============================================");
+              }
             }
-        }
+       }
+        
     }
 
     public void filtrarPendentes(){ 
-    
-        for(int i=0; i< tarefas.size(); i++){
-            if(tarefas.get(i).getStatus().equalsIgnoreCase("PENDENTE")){
+        if(tarefas.isEmpty()){
+            System.out.println("Lista Vazia!");
+        }else{
+            for(int i=0; i< tarefas.size(); i++){
+             if(tarefas.get(i).getStatus().equalsIgnoreCase("PENDENTE")){
                    System.out.println("===============================================");
-                System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
+                   System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
                    System.out.println("===============================================");
+                }
             }
         }
+        
     }
 
 
@@ -670,8 +678,14 @@ public void procurarTarefa(String titulo){
     }
 
     public  List<Tarefas> filtrarPorDatas(String data){
-        return tarefas.stream().filter(tarefas -> 
+        if(tarefas.isEmpty()){
+            System.out.println("Lista Vazia!");
+            
+        }
+             return tarefas.stream().filter(tarefas -> 
             tarefas.getData().equals(data)).collect(Collectors.toList());
+        
+       
     }
     
 
