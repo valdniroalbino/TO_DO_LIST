@@ -14,10 +14,7 @@ public class App {
             System.out.println("              📄 2. Ver Tarefas");
             System.out.println("              ❌ 3. Remover Tarefa");
             System.out.println("              ✅ 4. Marcar Tarefa Concluída");
-            System.out.println("              ⏳ 5. Filtrar Pendentes"); //dentro do ver
-            System.out.println("              🏆 6. Filtrar Concluídas"); //dentro do ver
-            System.out.println("              ✏️  7. Atualizar Tarefa");
-            System.out.println("              🔍 8. Procurar Tarefa");
+            System.out.println("              ✏️  5. Atualizar Tarefa");
             System.out.println("              🚪 0. Sair");
             System.out.println();
             System.out.println("===============================================");
@@ -122,10 +119,69 @@ switch (opCategoria) {
 
                  break;
 
-                 case 2:
-                    System.out.println("A ver tarefas...");
-                    list.listarTarefas();
-                    break;
+                case 2:
+
+    int opcaoVer;
+
+    do {
+
+        System.out.println("================ MENU VER TAREFAS ================");
+        System.out.println();
+        System.out.println("              📄 1. Ver todas");
+        System.out.println("              ⏳ 2. Ver pendentes");
+        System.out.println("              🏆 3. Ver concluídas");
+        System.out.println("              🔍 4. Procurar tarefa");
+        System.out.println("              ↩️  20. Voltar");
+        System.out.println();
+        System.out.println("==================================================");
+
+        System.out.print("Escolha uma opção: ");
+        opcaoVer = ent.nextInt();
+        ent.nextLine();
+
+
+        switch(opcaoVer){
+
+            case 1:
+                list.listarTarefas();
+                break;
+
+
+            case 2:
+                list.filtrarPendentes();
+                break;
+
+
+            case 3:
+                list.filtrarConcluidas();
+                break;
+
+
+            case 4:
+
+                System.out.print("Digite o título da tarefa: ");
+                String tituloPesquisa = ent.nextLine();
+
+                list.procurarTarefa(tituloPesquisa);
+
+                break;
+
+
+            case 0:
+                System.out.println("Voltando ao menu principal...");
+                break;
+
+
+            default:
+                System.out.println("Opção inválida!");
+
+        }
+
+
+    }while(opcaoVer != 0);
+
+
+break;
                  
                 case 3:
                  
@@ -145,14 +201,6 @@ switch (opCategoria) {
                     break;
 
                 case 5:
-                    list.filtrarPendentes();
-                    break;
-
-                case 6:
-                    list.filtrarConcluidas();
-                    break;
-
-                case 7:
                     System.out.print("Índice da tarefa: ");
                     int indiceAtualizar = ent.nextInt();
                     ent.nextLine();
@@ -166,15 +214,7 @@ switch (opCategoria) {
                     list.atualizar(indiceAtualizar, campo, novoValor);
                     break;
 
-                    case 8:
-
-                     
-                        System.out.print("Digite o título da tarefa: ");
-                        String tituloPesquisa = ent.nextLine();
-
-                        list.procurarTarefa(tituloPesquisa);
-
-                        break;
+        
 
                 case 0:
                     System.out.println("Saindo...🏃");
