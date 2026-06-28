@@ -4,6 +4,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         Scanner ent = new Scanner(System.in);
         Lista list = new Lista();
+        list.carregarTarefas();
         int op;
 
           
@@ -14,7 +15,7 @@ public class App {
             System.out.println("              📄 2. Ver Tarefas");
             System.out.println("              ❌ 3. Remover Tarefa");
             System.out.println("              ✅ 4. Marcar Tarefa Concluída");
-            System.out.println("              ✏️  5. Atualizar Tarefa");
+            System.out.println("              ✏️ 5. Atualizar Tarefa");
             System.out.println("              🚪 0. Sair");
             System.out.println();
             System.out.println("===============================================");
@@ -131,7 +132,7 @@ switch (opCategoria) {
         System.out.println("              ⏳ 2. Ver pendentes");
         System.out.println("              🏆 3. Ver concluídas");
         System.out.println("              🔍 4. Procurar tarefa");
-        System.out.println("              ↩️  20. Voltar");
+        System.out.println("              ↩️ 0. Voltar");
         System.out.println();
         System.out.println("==================================================");
 
@@ -217,6 +218,7 @@ break;
         
 
                 case 0:
+                    list.guardarTarefas();
                     System.out.println("Saindo...🏃");
                     break;
                 default:
