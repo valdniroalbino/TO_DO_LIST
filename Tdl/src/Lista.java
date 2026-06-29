@@ -555,12 +555,20 @@ public void procurarTarefa(String titulo){
             System.out.println("prioridade invalida!opcoes validas: baixa, media ou alta");
             return;
         }
+        int encontradas = 0;
         for(int i= 0; i < tarefas.size() ; i++){
             if(tarefas.get(i).getPrioridade().equalsIgnoreCase(prioridade)){
                 System.out.printf("%dº titulo: %s; | prioridade: %s| estado: %s| data: %s| categoria: %s\n"
                 ,i+1,tarefas.get(i).getTitulo(),tarefas.get(i).getPrioridade(),tarefas.get(i).getStatus(),
                 tarefas.get(i).getData(),tarefas.get(i).getCategoria());
+
+                encontradas++;
+
             }
+        }
+
+        if(encontradas == 0){
+            System.out.println("Nenhuma tarefa com prioridade " + prioridade + " encontrada.");
         }
     } 
 

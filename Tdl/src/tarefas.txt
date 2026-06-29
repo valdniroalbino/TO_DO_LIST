@@ -1,1 +1,2 @@
-1;teste;19/06/2026;baixa;pendente
+1;teste;11/12/2026;Casa;baixa;concluida
+2;teste 2;15/09/2028;Estudos;media;pendente
