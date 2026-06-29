@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,19 +88,22 @@ public boolean validarData(String data){
 
 
 
-    LocalDate hoje = LocalDate.now();
+LocalDate hoje = LocalDate.now();
 
+try {
     LocalDate dataTarefa = LocalDate.of(anoInt, mesInt, diaInt);
 
-
     if(dataTarefa.isBefore(hoje)){
-
         System.out.println("Essa data já está no passado!");
         return false;
     }
 
-
     return true;
+
+} catch (DateTimeException e) {
+    System.out.println("Data inválida! Essa combinação de dia/mês não existe.");
+    return false;
+}
 }
 
 
@@ -182,7 +186,7 @@ public boolean validarPrioridade(String prioridade){
             System.out.println("lista de tarefas vazia!");
             return;
         }
-        if((categoria == null || categoria.trim().isEmpty()) && !categoria.equalsIgnoreCase("casa") && !categoria.equalsIgnoreCase("trabalho") && !categoria.equalsIgnoreCase("estudos") && !categoria.equalsIgnoreCase("outros")){
+        if((categoria == null || categoria.trim().isEmpty()) || (!categoria.equalsIgnoreCase("casa") && !categoria.equalsIgnoreCase("trabalho") && !categoria.equalsIgnoreCase("estudos") && !categoria.equalsIgnoreCase("outros"))){
             System.out.println("categoria mal digitada! opcao validas: : Casa, Estudos, trabalho ou outros.");
             return;
         }
@@ -313,7 +317,7 @@ public boolean validarPrioridade(String prioridade){
 
     public void marcarConcluida(int id){
         if(id>=1 && id <= tarefas.size()){
-            tarefas.get(id-1).setStatus("CONCLUIDA");
+            tarefas.get(id-1).setStatus("concluida");
              System.out.println("===============================================");
             System.out.println("               Tarefa concluída!");
                System.out.println("===============================================");
@@ -326,7 +330,7 @@ public boolean validarPrioridade(String prioridade){
 
     public void marcarPendente(int id){
          if(id>=1 && id <= tarefas.size()){
-            tarefas.get(id-1).setStatus("PENDENTE");
+            tarefas.get(id-1).setStatus("pendente");
                System.out.println("===============================================");
             System.out.println("                 Tarefa pendente!");
                System.out.println("===============================================");
@@ -342,7 +346,7 @@ public boolean validarPrioridade(String prioridade){
         System.out.println("Lista Vazia!");
        }else{
             for(int i=0; i< tarefas.size(); i++){
-             if(tarefas.get(i).getStatus().equalsIgnoreCase("CONCLUÍDA")){
+             if(tarefas.get(i).getStatus().equalsIgnoreCase("CONCLUIDA")){
                    System.out.println("===============================================");
                    System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
                    System.out.println("===============================================");

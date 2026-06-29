@@ -18,7 +18,7 @@ public class App {
             System.out.println("              📄 2. Ver Tarefas");
             System.out.println("              ❌ 3. Remover Tarefa");
             System.out.println("              ✅ 4. Marcar Tarefa Concluída");
-            System.out.println("              ✏️  5. Atualizar Tarefa");
+            System.out.println("              ✏️ 5. Atualizar Tarefa");
             System.out.println("              🚪 0. Sair");
             System.out.println();
             System.out.println("==================================================");
@@ -31,11 +31,7 @@ public class App {
 
             switch(op){
 
-
-                // ==================================
-                // ADICIONAR TAREFA
-                // ==================================
-
+    // Adicionar tarefa
                 case 1:
 
                     String titulo;
@@ -163,7 +159,7 @@ public class App {
                     int opcaoVer;
 
 
-                    do{
+       do{
 
 
                         System.out.println("\n=============== VER TAREFAS ===============");
@@ -514,12 +510,8 @@ public class App {
 
                 case 0:
 
-
-                    System.out.println("Saindo... 🏃");
-
+                    System.out.println("Saindo...🏃");
                     break;
-
-
 
                 default:
 
