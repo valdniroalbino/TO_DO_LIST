@@ -350,7 +350,9 @@ public boolean validarPrioridade(String prioridade){
                    System.out.println("===============================================");
                    System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
                    System.out.println("===============================================");
-              }
+              }else{
+                    System.out.println("Nao ha tarefas concluidas!");
+                }
             }
        }
         
@@ -365,6 +367,8 @@ public boolean validarPrioridade(String prioridade){
                    System.out.println("===============================================");
                    System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
                    System.out.println("===============================================");
+                }else{
+                    System.out.println("Nao ha tarefas pendentes!");
                 }
             }
         }
@@ -426,27 +430,6 @@ public void procurarTarefa(String titulo){
     }
 
 }
-
-    /*public void listarVenceHoje(){
-        LocalDateTime hoje = LocalDateTime.now();
-        System.out.println("\n=== Vencem Hoje ===");
-        for(Tarefas t : tarefas){
-            if(t.getData().isEqual(hoje)){
-                System.out.println(t.getId() + " - " + t.getTitulo());
-            }
-        }
-    }
-
-    public void listarNoPrazo(){
-        LocalDateTime hoje = LocalDateTime.now();
-        System.out.println("\n=== Vencem Hoje ===");
-        for(Tarefas t : tarefas){
-            if(t.getData().isAfter(hoje)){
-                System.out.println(t.getId() + " - " + t.getTitulo());
-            }
-        }
-    }*/
-
 
     
     //Guarda todas as tarefas no ficheiro tarefas.txt.
