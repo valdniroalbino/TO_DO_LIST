@@ -345,14 +345,19 @@ public boolean validarPrioridade(String prioridade){
        if(tarefas.isEmpty()){
         System.out.println("Lista Vazia!");
        }else{
+        int g = 0;
             for(int i=0; i< tarefas.size(); i++){
              if(tarefas.get(i).getStatus().equalsIgnoreCase("CONCLUIDA")){
                    System.out.println("===============================================");
                    System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
                    System.out.println("===============================================");
-              }else{
-                    System.out.println("Nao ha tarefas concluidas!");
-                }
+                   g++;
+              }
+            }
+            if(g == 0){
+                System.out.println("===============================================");
+                System.out.println("          Nenhuma tarefa concluida!");
+                System.out.println("===============================================");
             }
        }
         
@@ -362,14 +367,19 @@ public boolean validarPrioridade(String prioridade){
         if(tarefas.isEmpty()){
             System.out.println("Lista Vazia!");
         }else{
+            int g = 0;
             for(int i=0; i< tarefas.size(); i++){
              if(tarefas.get(i).getStatus().equalsIgnoreCase("PENDENTE")){
                    System.out.println("===============================================");
                    System.out.println((i+1)+" - "+tarefas.get(i).getTitulo());
                    System.out.println("===============================================");
-                }else{
-                    System.out.println("Nao ha tarefas pendentes!");
+                   g++;
                 }
+            }
+            if(g == 0){
+                System.out.println("===============================================");
+                System.out.println("          Nenhuma tarefa pendente!");
+                System.out.println("===============================================");
             }
         }
         
