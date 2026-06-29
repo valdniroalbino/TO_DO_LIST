@@ -19,6 +19,7 @@ public class App {
             System.out.println("              ❌ 3. Remover Tarefa");
             System.out.println("              ✅ 4. Marcar Tarefa Concluída");
             System.out.println("              ✏️ 5. Atualizar Tarefa");
+            System.out.println("              📂 6. Carregar Lista");
             System.out.println("              🚪 0. Sair");
             System.out.println();
             System.out.println("==================================================");
@@ -505,11 +506,30 @@ public class App {
 
                     break;
 
+                case 6:
+                    list.carregarTarefas();
+
+                    break;
+
 
 
 
                 case 0:
 
+                    //System.out.println("Saindo...🏃");
+                    int opout;
+                    do{
+                    System.out.println("Deseja Guardar a lista de tarefas ?\n1. Sim\n2. Não");
+                    opout = ent.nextInt();
+                    if (opout == 1) {
+                        list.guardarTarefas();
+                        break;
+                    } else if(opout == 2){
+                        break;
+                    }else{
+                        System.out.println("Opção inválida!");
+                    }
+                }while(opout != 1 && opout != 2);
                     System.out.println("Saindo...🏃");
                     break;
 
